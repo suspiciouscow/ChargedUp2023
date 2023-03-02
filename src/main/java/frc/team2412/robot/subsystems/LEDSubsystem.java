@@ -29,6 +29,7 @@ public class LEDSubsystem extends SubsystemBase {
 		// TODO: we start a starting color
 	}
 
+	/** returns the buffer length */
 	public int getBufferLength() {
 		return BUFFER_LENGTH;
 	} // End of getBufferLength()
@@ -36,7 +37,11 @@ public class LEDSubsystem extends SubsystemBase {
 	public AddressableLEDBuffer getBuffer() {
 		return buffer;
 	}
-
+	/**
+	 * sets the color of the whole LED strip
+	 *
+	 * @param RGB value to set the LED colors as
+	 */
 	public void setBuffer(Color color) {
 		for (var i = 0; i < buffer.getLength(); i++) {
 			// Sets each led in the buffer to the color
