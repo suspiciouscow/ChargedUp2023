@@ -6,20 +6,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AutonomousChooser {
-	private final SendableChooser<Command> autonomousModeChooser = new SendableChooser<>();
+	public interface CommandSupplier {
+		Command getCommand();
+	}
+
+	private final SendableChooser<CommandSupplier> autonomousModeChooser = new SendableChooser<>();
 
 	public AutonomousChooser() {
 		autonomousModeChooser.setDefaultOption(
-				"Community", AutonomousTrajectories.getCommunityAutoPathCommand());
+				"LeftLeaveCom", () -> AutonomousTrajectories.getAutoPathByName("LeftLeaveCom"));
 		autonomousModeChooser.addOption(
-				"ChargeStation", AutonomousTrajectories.getChargedAutoPathCommand());
+				"RightLeaveCom", () -> AutonomousTrajectories.getAutoPathByName("RightLeaveCom"));
+		autonomousModeChooser.addOption(
+				"MiddleLeaveComCharge",
+				() -> AutonomousTrajectories.getAutoPathByName("MiddleLeaveComCharge"));
+		autonomousModeChooser.addOption(
+				"LeftScoreLeaveCom", () -> AutonomousTrajectories.getAutoPathByName("LeftScoreLeaveCom"));
+		autonomousModeChooser.addOption(
+				"MiddleScoreLeaveComCharge",
+				() -> AutonomousTrajectories.getAutoPathByName("MiddleScoreLeaveComCharge"));
+		autonomousModeChooser.addOption(
+				"RightScoreLeaveCom", () -> AutonomousTrajectories.getAutoPathByName("RightScoreLeaveCom"));
+		autonomousModeChooser.addOption(
+				"LeftScoreLeaveCom2", () -> AutonomousTrajectories.getAutoPathByName("LeftScoreLeaveCom2"));
 
+		// There are more paths that have been created in the deploy/pathplanner path, they should work
+		// however they have not been tested and thus are not added here yet.
 		ShuffleboardTab autonomousTab = Shuffleboard.getTab("Autonomous");
 
 		autonomousTab.add("Choose Auto Mode", autonomousModeChooser).withPosition(0, 0).withSize(2, 1);
 	}
 
 	public Command getAuto() {
-		return autonomousModeChooser.getSelected();
+		return autonomousModeChooser.getSelected().getCommand();
 	}
 }

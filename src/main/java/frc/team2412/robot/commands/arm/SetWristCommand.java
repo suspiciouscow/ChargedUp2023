@@ -24,6 +24,7 @@ public class SetWristCommand extends CommandBase {
 			IntakeSubsystem intakeSubsystem,
 			WristPosition targetWristPosition) {
 		this.armSubsystem = armSubsystem;
+		addRequirements(armSubsystem);
 
 		if (armSubsystem.getPosition() == PositionType.UNKNOWN_POSITION) {
 			// return;
@@ -56,6 +57,7 @@ public class SetWristCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		armSubsystem.setWristGoal(targetWristAngle);
+		System.out.println("Hi community");
 	}
 
 	@Override
@@ -65,6 +67,7 @@ public class SetWristCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return true;
+		// has pid moved us close enough to go back to manual control?
+		return Math.abs(armSubsystem.getWristPosition() - targetWristAngle) < 0.1;
 	}
 }
